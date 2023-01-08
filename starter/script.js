@@ -118,22 +118,39 @@ function getPasswordOptions() {
   var wantNumeric= confirm("Do you want any numeric digits in your password? \n Press OK if you DO and Cancel if you do not.");
   userResponse["numeric"] = wantNumeric;
   //ask if they want any special characters?
-  var wantSpecialChar= confirm("Do you want any special characters in your password? \n Press OK if you DO and Cancel if you do not.");
+  var wantSpecialChar= confirm("Do you want any special characters($@%&*, etc) in your password? \n Press OK if you DO and Cancel if you do not.");
   userResponse["specialChars"] = wantSpecialChar;
 
   console.log(userResponse)
   return userResponse
 }
-getPasswordOptions()
 // Function for getting a random element from an array
 function getRandom(arr) {
-
+  //return item at random selected index out of all indexes in array
+  return arr[Math.floor(Math.random() * arr.length)];
 
 }
 
 // Function to generate password with user input
 function generatePassword() {
-  //when user makes a selection use map with get random
+  var userResponse = getPasswordOptions();
+  var password = []
+  while (password.length < userResponse.length){
+    if(userResponse.uppercase){
+      password.unshift(getRandom(upperCasedCharacters));
+    };
+    if(userResponse.lowercase){
+      password.push(getRandom(lowerCasedCharacters));
+    };
+    if(userResponse.specialChars){
+      password.unshift(getRandom(specialCharacters));
+    };
+    if(userResponse.numeric){
+      password.unshift(getRandom(numericCharacters));
+    };
+
+  }
+  return password.join("");
 
 }
 
@@ -150,3 +167,4 @@ function writePassword() {
 
 // Add event listener to generate button
 generateBtn.addEventListener('click', writePassword);
+writePassword();
